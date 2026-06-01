@@ -18,6 +18,17 @@ export default function VirtualSundae({ onAddCustomProduct, onOpenCart }: Virtua
   const [selectedSauces, setSelectedSauces] = useState<SundaeIngredient[]>([]);
   const [selectedToppings, setSelectedToppings] = useState<SundaeIngredient[]>([]);
   const [successMode, setSuccessMode] = useState(false);
+  const [sundaeBgUrl, setSundaeBgUrl] = useState("https://i.postimg.cc/phFWmG5d/2a4201a1854a13877f8be73486ba4237.png");
+
+  const handleBgError = () => {
+    if (sundaeBgUrl.endsWith('.png')) {
+      setSundaeBgUrl("https://i.postimg.cc/phFWmG5d/2a4201a1854a13877f8be73486ba4237.jpg");
+    } else if (sundaeBgUrl.endsWith('.jpg')) {
+      setSundaeBgUrl("https://i.postimg.cc/phFWmG5d/2a4201a1854a13877f8be73486ba4237.jpeg");
+    } else if (sundaeBgUrl.endsWith('.jpeg')) {
+      setSundaeBgUrl("https://i.postimg.cc/phFWmG5d/2a4201a1854a13877f8be73486ba4237.webp");
+    }
+  };
 
   const cups = SUNDAE_INGREDIENTS.filter(i => i.type === 'cup');
   const scoops = SUNDAE_INGREDIENTS.filter(i => i.type === 'scoop');
@@ -117,10 +128,23 @@ export default function VirtualSundae({ onAddCustomProduct, onOpenCart }: Virtua
   };
 
   return (
-    <section className="py-20 min-h-screen max-w-[1280px] mx-auto px-4 md:px-8">
-      
-      {/* Title description bar */}
-      <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
+    <section className="relative py-20 min-h-screen w-full overflow-hidden bg-[#fffdfb]">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none -z-10 overflow-hidden select-none">
+        <img
+          src={sundaeBgUrl}
+          onError={handleBgError}
+          alt="Virtual Sundae Pattern"
+          className="w-full h-full object-cover opacity-18 mix-blend-multiply transition-opacity duration-300"
+          referrerPolicy="no-referrer"
+        />
+        {/* Symmetrical premium warm-cream overlay to guarantee excellent readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#fffdfb]/92 via-[#fffdfb]/65 to-[#fffdfb]/92" />
+      </div>
+
+      <div className="max-w-[1280px] mx-auto px-4 md:px-8 relative z-10">
+        {/* Title description bar */}
+        <div className="text-center max-w-2xl mx-auto mb-16 space-y-4">
         <ShinyText
           text="✦ VIRTUAL STUDIO WORKBENCH ✦"
           disabled={false}
@@ -565,6 +589,7 @@ export default function VirtualSundae({ onAddCustomProduct, onOpenCart }: Virtua
 
       </div>
 
+    </div>
     </section>
   );
 }

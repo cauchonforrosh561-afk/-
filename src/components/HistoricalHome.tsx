@@ -156,7 +156,7 @@ export default function HistoricalHome({ onNavTab }: HistoricalHomeProps) {
         {/* Widescreen Hero content overlays: Scrolling 1.2x speed with auto fade-out */}
         <motion.div
           style={{ y: fgY, opacity: heroOpacity }}
-          className="relative z-10 max-w-4xl mx-auto text-center px-4 flex flex-col items-center will-change-transform"
+          className="relative z-25 max-w-4xl mx-auto text-center px-4 flex flex-col items-center will-change-transform"
         >
           {/* Circular float seal emblem */}
           <motion.div
@@ -230,7 +230,22 @@ export default function HistoricalHome({ onNavTab }: HistoricalHomeProps) {
       </section>
 
       {/* 2. Interactive Historical Decades Slider (Reuben Mattus legacy) */}
-      <section className="bg-[#fff1ed] py-24 border-y border-[#ffe9e3] relative overflow-hidden">
+      <section className="relative py-24 border-y border-[#ffe9e3] overflow-hidden bg-[#fffdfb]">
+        {/* Background Video */}
+        <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden select-none">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover opacity-85"
+          >
+            <source src="https://ik.imagekit.io/vpkooy7vh/6%E6%9C%881%E6%97%A5.mp4?updatedAt=1780275703850" type="video/mp4" />
+          </video>
+          {/* Symmetrical premium warm-cream overlay to guarantee excellent readability for text and carousel cards */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#fffdfb]/90 via-[#fffdfb]/55 to-[#fffdfb]/90" />
+        </div>
+
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 relative z-10">
           
           {/* Header block with elegant typography pairing */}

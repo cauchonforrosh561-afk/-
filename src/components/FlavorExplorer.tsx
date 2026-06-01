@@ -20,6 +20,17 @@ export default function FlavorExplorer({ onAddFlavorToCart }: FlavorExplorerProp
   const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
   const [quizResult, setQuizResult] = useState<Flavor | null>(null);
+  const [quizBgUrl, setQuizBgUrl] = useState("https://i.postimg.cc/phFWmG5d/2a4201a1854a13877f8be73486ba4237.png");
+
+  const handleBgError = () => {
+    if (quizBgUrl.endsWith('.png')) {
+      setQuizBgUrl("https://i.postimg.cc/phFWmG5d/2a4201a1854a13877f8be73486ba4237.jpg");
+    } else if (quizBgUrl.endsWith('.jpg')) {
+      setQuizBgUrl("https://i.postimg.cc/phFWmG5d/2a4201a1854a13877f8be73486ba4237.jpeg");
+    } else if (quizBgUrl.endsWith('.jpeg')) {
+      setQuizBgUrl("https://i.postimg.cc/phFWmG5d/2a4201a1854a13877f8be73486ba4237.webp");
+    }
+  };
 
   const categories = Array.from(new Set(FLAVORS.map(f => f.category)));
 
@@ -104,7 +115,23 @@ export default function FlavorExplorer({ onAddFlavorToCart }: FlavorExplorerProp
   });
 
   return (
-    <div className="py-20 max-w-[1280px] mx-auto px-4 md:px-8">
+    <section className="relative py-20 min-h-screen w-full overflow-hidden bg-[#fffdfb]">
+      {/* Background Video */}
+      <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden select-none">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover opacity-85"
+        >
+          <source src="https://ik.imagekit.io/vpkooy7vh/5%E6%9C%8827%E6%97%A5.mp4?updatedAt=1779843683617" type="video/mp4" />
+        </video>
+        {/* Symmetrical premium warm-cream overlay to guarantee excellent readability for text and cards */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#fffdfb]/92 via-[#fffdfb]/60 to-[#fffdfb]/92" />
+      </div>
+
+      <div className="max-w-[1280px] mx-auto px-4 md:px-8 relative z-10">
       
       {/* 1. Dynamic Mode Controller: Regular Catalog vs. Mini Quiz */}
       <div className="flex justify-center mb-16">
@@ -148,33 +175,45 @@ export default function FlavorExplorer({ onAddFlavorToCart }: FlavorExplorerProp
           >
             {!quizResult ? (
               /* A. ACTIVE QUESTION CARD */
-              <div className="bg-white rounded-3xl p-8 md:p-12 border border-[#ffe9e3] shadow-md space-y-8 relative overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#ffe9e3]" />
+              <div className="bg-[#fffcfb] rounded-3xl p-8 md:p-12 border border-[#ffe9e3] shadow-md space-y-8 relative overflow-hidden">
+                {/* Symmetrical premium background overlay with fallback */}
+                <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden select-none">
+                  <img
+                    src={quizBgUrl}
+                    alt="Quiz Background Pattern"
+                    referrerPolicy="no-referrer"
+                    onError={handleBgError}
+                    className="w-full h-full object-cover opacity-18 mix-blend-multiply transition-opacity duration-550"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#fffdfc]/92 via-white/85 to-[#fffdfc]/92" />
+                </div>
+
+                <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#ffe9e3] to-[#ffdbd0] z-10" />
                 
                 {/* Progress bar ratio indicators */}
-                <div className="flex justify-between items-center text-xs font-sans text-gray-400">
-                  <span className="uppercase tracking-widest font-semibold text-[#b97a20]">HÄAGEN-DAZS TEST</span>
-                  <span>进度：Q.{currentQuestionIdx + 1} / {quizQuestions.length}</span>
+                <div className="flex justify-between items-center text-xs font-sans text-gray-500 z-10 relative">
+                  <span className="uppercase tracking-widest font-black text-[#b97a20]">✦ HÄAGEN-DAZS ESSENCE ✦</span>
+                  <span className="font-medium bg-[#ffe9e3]/30 px-3 py-1 rounded-full text-[#6c2f00]">进度：Q.{currentQuestionIdx + 1} / {quizQuestions.length}</span>
                 </div>
 
-                <div className="space-y-4">
-                  <h3 className="font-serif text-[24px] md:text-[30px] text-[#6c2f00] font-bold leading-tight">
+                <div className="space-y-4 z-10 relative">
+                  <h3 className="font-serif text-[24px] md:text-[30px] text-[#5c2800] font-black leading-tight">
                     {quizQuestions[currentQuestionIdx].q}
                   </h3>
-                  <div className="h-0.5 w-16 bg-[#6c2f00]/30" />
+                  <div className="h-0.5 w-16 bg-[#6c2f00]/40" />
                 </div>
 
-                <div className="space-y-3.5">
+                <div className="space-y-3.5 z-10 relative">
                   {quizQuestions[currentQuestionIdx].options.map((opt) => (
                     <button
                       key={opt.key}
                       onClick={() => handleAnswerSelect(opt.category)}
-                      className="w-full text-left p-5 rounded-2xl border border-[#ffe9e3] hover:border-[#6c2f00] hover:bg-[#fff1ed]/20 transition-all duration-300 cursor-pointer select-none group flex items-start gap-4"
+                      className="w-full text-left p-5 rounded-2xl border border-[#ffe9e3] bg-white/75 hover:bg-white hover:border-[#6c2f00] hover:shadow-xs transition-all duration-300 cursor-pointer select-none group flex items-start gap-4"
                     >
                       <span className="w-6 h-6 rounded-full bg-[#ffe9e3] group-hover:bg-[#6c2f00] group-hover:text-white transition-colors flex items-center justify-center text-xs font-bold text-[#6c2f00] flex-none">
                         {opt.key}
                       </span>
-                      <span className="font-sans text-[14px] text-[#2c160e] font-medium leading-relaxed group-hover:translate-x-1 transition-transform inline-block">
+                      <span className="font-sans text-[14.5px] text-[#2c160e] font-semibold leading-relaxed group-hover:translate-x-1 transition-transform inline-block">
                         {opt.text}
                       </span>
                     </button>
@@ -186,32 +225,44 @@ export default function FlavorExplorer({ onAddFlavorToCart }: FlavorExplorerProp
               <motion.div
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-white rounded-[2rem] p-8 md:p-12 border border-[#ffe9e3] shadow-lg text-center space-y-8 relative overflow-hidden"
+                className="bg-[#fffcfb] rounded-[2rem] p-8 md:p-12 border border-[#ffe9e3] shadow-lg text-center space-y-8 relative overflow-hidden"
               >
+                {/* Symmetrical premium background overlay with fallback */}
+                <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden select-none">
+                  <img
+                    src={quizBgUrl}
+                    alt="Quiz Background Pattern"
+                    referrerPolicy="no-referrer"
+                    onError={handleBgError}
+                    className="w-full h-full object-cover opacity-18 mix-blend-multiply transition-opacity duration-550"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#fffdfc]/92 via-white/85 to-[#fffdfc]/92" />
+                </div>
+
                 {/* Absolute background vector effects */}
-                <div className="absolute top-0 inset-x-0 h-2.5 bg-gradient-to-r from-yellow-500 via-[#6c2f00] to-yellow-600" />
+                <div className="absolute top-0 inset-x-0 h-2.5 bg-gradient-to-r from-yellow-500 via-[#6c2f00] to-yellow-600 z-10" />
                 
-                <div className="space-y-2">
+                <div className="space-y-2 z-10 relative">
                   <span className="bg-[#006e20]/10 border border-[#006e20]/25 text-[#006e20] text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest inline-block select-none">
                     ✦ YOUR PERFECT SOULMATE MATCHED ✦
                   </span>
-                  <h3 className="font-serif text-[32px] md:text-[42px] text-[#6c2f00] leading-none">
+                  <h3 className="font-serif text-[32px] md:text-[42px] text-[#6c2f00] leading-none font-black">
                     您的风味灵魂半兽：{quizResult.name}
                   </h3>
                 </div>
 
                 {/* Main illustration displaying the matched flavor */}
-                <div className="w-56 h-56 rounded-full bg-[#ffe9e3] p-4 mx-auto relative flex items-center justify-center shadow-inner">
+                <div className="w-56 h-56 rounded-full bg-[#ffe9e3]/60 p-4 mx-auto relative flex items-center justify-center shadow-inner z-10">
                   <img
                     src={quizResult.imageUrl}
                     alt={quizResult.name}
                     referrerPolicy="no-referrer"
-                    className="w-full h-full object-contain filter drop-shadow-lg scale-95 floating-icecream relative z-10"
+                    className="w-full h-full object-contain filter drop-shadow-lg scale-95 floating-icecream relative z-2"
                   />
                 </div>
 
-                <div className="space-y-4 max-w-lg mx-auto">
-                  <p className="font-serif italic text-[#2c160e] text-[15px] leading-relaxed bg-[#fff8f6] p-5 rounded-2xl border border-dashed border-[#ffdbd0]">
+                <div className="space-y-4 max-w-lg mx-auto z-10 relative">
+                  <p className="font-serif italic text-[#2c160e] text-[15.5px] leading-relaxed bg-white/75 backdrop-blur-xs p-5 rounded-2xl border border-dashed border-[#ffdbd0]">
                     "{quizResult.description}"
                   </p>
                   
@@ -225,19 +276,19 @@ export default function FlavorExplorer({ onAddFlavorToCart }: FlavorExplorerProp
                 </div>
 
                 {/* Coupon simulation wrapper */}
-                <div className="bg-[#fff8f6] rounded-2xl p-5 border border-dashed border-[#ffdbd0] max-w-sm mx-auto space-y-2 text-center select-none relative">
+                <div className="bg-[#fff8f6]/90 backdrop-blur-xs rounded-2xl p-5 border border-dashed border-[#ffdbd0] max-w-sm mx-auto space-y-2 text-center select-none relative z-10">
                   <span className="text-[10px] tracking-widest font-sans font-bold uppercase text-gray-400 block">EXCLUSIVELY FOR YOU</span>
                   <div className="font-serif text-[24px] font-bold text-[#6c2f00] leading-none">
                     ¥50 灵感抵扣券
                   </div>
                   <p className="font-sans text-[11px] text-gray-400">凭本页订购首单满¥200时，自动削减抵扣。</p>
                   {/* Decorative side gaps */}
-                  <div className="absolute -left-3.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white border-r border-[#ffe9e3]" />
-                  <div className="absolute -right-3.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white border-l border-[#ffe9e3]" />
+                  <div className="absolute -left-3.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#fffcfb] border-r border-[#ffe9e3]" />
+                  <div className="absolute -right-3.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-[#fffcfb] border-l border-[#ffe9e3]" />
                 </div>
 
                 {/* Final step buttons */}
-                <div className="flex justify-center gap-4 pt-4">
+                <div className="flex justify-center gap-4 pt-4 z-10 relative">
                   <button
                     onClick={() => handleResetQuiz()}
                     className="border border-[#6c2f05]/30 hover:bg-[#fff8f6] text-[#6c2f00] font-display text-xs px-6 py-3.5 rounded-full font-bold transition-colors cursor-pointer flex items-center gap-1.5"
@@ -519,6 +570,7 @@ export default function FlavorExplorer({ onAddFlavorToCart }: FlavorExplorerProp
         )}
       </AnimatePresence>
 
-    </div>
+      </div>
+    </section>
   );
 }
