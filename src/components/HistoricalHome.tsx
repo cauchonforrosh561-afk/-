@@ -286,16 +286,28 @@ export default function HistoricalHome({ onNavTab }: HistoricalHomeProps) {
       </section>
 
       {/* 3. Pure Ingredient Guarantee block with subtle table salon background */}
-      <section className="relative py-24 border-b border-[#ffe9e3] bg-[#fffdfc] overflow-hidden">
+      <section className="relative py-24 border-b border-[#ffe9e3] bg-[#fffdfb] overflow-hidden">
         
         {/* Absolute sketch outline salon tabletop backdrop */}
         <div className="absolute inset-0 z-0 select-none pointer-events-none">
-          <div 
-            className="w-full h-full bg-cover bg-right md:bg-center opacity-[0.24] mix-blend-multiply"
-            style={{ backgroundImage: `url('/src/assets/images/vintage_table_salon_bg_1779841262706.png')` }}
+          <img 
+            src="https://i.postimg.cc/nVDy2gn1/a8dab78f13d6112409a82f0bf17042c9.jpg"
+            onError={(e) => {
+              const img = e.currentTarget;
+              if (img.src.includes('.jpg')) {
+                img.src = "https://i.postimg.cc/nVDy2gn1/a8dab78f13d6112409a82f0bf17042c9.png";
+              } else if (img.src.includes('.png')) {
+                img.src = "https://i.postimg.cc/nVDy2gn1/a8dab78f13d6112409a82f0bf17042c9.jpeg";
+              } else if (img.src.includes('.jpeg')) {
+                img.src = "https://i.postimg.cc/nVDy2gn1/a8dab78f13d6112409a82f0bf17042c9.webp";
+              }
+            }}
+            alt="Guarantee Background"
+            referrerPolicy="no-referrer"
+            className="w-full h-full object-cover opacity-35 mix-blend-multiply transition-opacity duration-300"
           />
           {/* Symmetrical soft light gradient overlay to maintain absolute clear contrast and typography separation */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#fffdfc] via-[#fffdfc]/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#fffdfb]/80 via-[#fffdfb]/30 to-[#fffdfb]/80" />
         </div>
 
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 relative z-10">
@@ -373,16 +385,28 @@ export default function HistoricalHome({ onNavTab }: HistoricalHomeProps) {
 
 
       {/* 4. Artistic Flavor Showcase list with elegant vintage illustration background */}
-      <section className="relative py-24 border-b border-[#ffe9e3] bg-[#fffdfc] overflow-hidden">
+      <section className="relative py-24 border-b border-[#ffe9e3] bg-[#fffdfb] overflow-hidden">
         
         {/* Absolute vintage illustration backdrop */}
         <div className="absolute inset-0 z-0 select-none pointer-events-none">
-          <div 
-            className="w-full h-full bg-cover bg-center md:bg-right-bottom opacity-[0.24] mix-blend-multiply"
-            style={{ backgroundImage: `url('/src/assets/images/vintage_guarantee_bg_1779706301702.png')` }}
+          <img 
+            src="https://i.postimg.cc/4y7FS7C3/45637f7158b42dd5cb8fc3f3ec772036.jpg"
+            onError={(e) => {
+              const img = e.currentTarget;
+              if (img.src.includes('.jpg')) {
+                img.src = "https://i.postimg.cc/4y7FS7C3/45637f7158b42dd5cb8fc3f3ec772036.png";
+              } else if (img.src.includes('.png')) {
+                img.src = "https://i.postimg.cc/4y7FS7C3/45637f7158b42dd5cb8fc3f3ec772036.jpeg";
+              } else if (img.src.includes('.jpeg')) {
+                img.src = "https://i.postimg.cc/4y7FS7C3/45637f7158b42dd5cb8fc3f3ec772036.webp";
+              }
+            }}
+            alt="Showcase Background"
+            referrerPolicy="no-referrer"
+            className="w-full h-full object-cover scale-125 origin-center opacity-48 mix-blend-multiply transition-all duration-300"
           />
           {/* Symmetrical soft light gradient overlay to maintain absolute clear contrast and typography separation */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#fffdfc] via-[#fffdfc]/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#fffdfb]/80 via-[#fffdfb]/25 to-[#fffdfb]/80" />
         </div>
 
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 relative z-10">
