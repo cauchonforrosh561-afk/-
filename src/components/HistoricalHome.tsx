@@ -333,9 +333,9 @@ export default function HistoricalHome({ onNavTab }: HistoricalHomeProps) {
           <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               { title: '手采马达加斯加香草', icon: '✦', desc: '手工繁硕授粉结荚，于琥珀色的陈化阴凉中醇厚香溢。', path: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD4GxW4O1T4E0XMhjqfhilIpHSgpjDQkrzWHSWRaLlHJm4qIqMb1c00TimGLYoHIo23ukFXuz1q75Wg7tYQ1NjT4qU6LnFRcg3KmswdQQhGewVPgT_r3fjQ4cNN3eUIQtNIl872Rfa1DksBmpnNVnIl5S5bHR-G4twZqMyyLqADbKyZCPnkq-Yaspn-_EDLOkHswwgmvyYWuqbEADWBHiAsJF7SZNoLssJjCmxZF-2pTPuMlEP5d6ddWG80aCRRNR8L_O16hKXiV6Bk' },
-              { title: '西非黄金可可配比', icon: '✦', desc: '古法木桶焙火，保留原始可可微苦 and 丰沃的黑松露果胶香味。', path: '/src/assets/images/west_african_cocoa_1780278393215.png' },
+              { title: '西非黄金可可配比', icon: '✦', desc: '古法木桶焙火，保留原始可可微苦 and 丰沃的黑松露果胶香味。', path: 'https://i.postimg.cc/RFsfkWMy/west-african-cocoa-1780278393215.jpg' },
               { title: '新西兰牧场有机乳源', icon: '✦', desc: '全年 300 天自由放牧，纯生原生乳腺营养，构筑浓重绵乳脂。', path: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAIMopRsYy_AcBsE5r7742PJbJaKQgSE1HILakiEP9_fY8mc9obliHbkXCT_RcUe5XLPeJUXMnmzq9ikr1HRb6if6uecJJ4mFK2mvOHoGcuZYGcegBTlqgERk6b1qNxliPG-dDBVONpl6um7yBZSSC_sL-e4s4gEd6490V4Di98oTKnyqWDVGx6GCDpdWY_VQFAuFqUro21XWTfuqyciMNObjGiQM5UTHrcFitT_iNfyOhKimoc4AXo8whPDAn4UFGon6NuaaHQ8UkO' },
-              { title: '庄园鲜桃覆盆子汁', icon: '✦', desc: '清晨带露时分手工摘采，冷碾鲜榨保留果酸 and 高抗氧化活性。', path: '/src/assets/images/peach_raspberry_juice_1780278408279.png' }
+              { title: '庄园鲜桃覆盆子汁', icon: '✦', desc: '清晨带露时分手工摘采，冷碾鲜榨保留果酸 and 高抗氧化活性。', path: 'https://i.postimg.cc/CLvtc7TP/peach-raspberry-juice-1780278408279.jpg' }
             ].map((grid, idx) => (
               <div key={idx} className="bg-white/90 backdrop-blur-md p-5 rounded-2xl border border-[#ffe9e3] hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 select-none text-center group">
                 <div className="w-full aspect-video rounded-xl overflow-hidden mb-4 border border-[#fff2ee] relative">
