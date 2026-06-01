@@ -1,0 +1,6 @@
+{
+  "name": "Häagen-Dazs Retro Luxury",
+  "description": "哈根达斯60周年轻奢回眸：融合尊享AI风味罗盘配比与圣代定制工坊，传承Reuben Mattus纯粹初心",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
