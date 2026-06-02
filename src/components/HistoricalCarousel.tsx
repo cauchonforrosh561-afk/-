@@ -147,15 +147,27 @@ export default function HistoricalCarousel() {
                 isCenter ? 'shadow-[#6c2f00]/10 hover:shadow-[#6c2f00]/20' : 'brightness-[0.9] hover:brightness-100'
               }`}
             >
+              {/* Premium Card Background Image if configured */}
+              {item.bgImage && (
+                <>
+                  <div 
+                    className="absolute inset-0 bg-cover bg-center z-0 transition-all duration-300 pointer-events-none" 
+                    style={{ backgroundImage: `url(${item.bgImage})` }}
+                  />
+                  {/* High contrast glass glaze overlay so that texts are perfect to read */}
+                  <div className="absolute inset-0 bg-[#fffdfb]/88 backdrop-blur-[2px] z-0 pointer-events-none" />
+                </>
+              )}
+
               {/* Card Gold Inner Filigree Border */}
-              <div className="absolute inset-4 border border-[#ffdbd0]/30 rounded-[1.6rem] pointer-events-none" />
-              <div className="absolute inset-4.5 border border-dashed border-[#ffdbd0]/20 rounded-[1.5rem] pointer-events-none" />
+              <div className="absolute inset-4 border border-[#ffdbd0]/30 rounded-[1.6rem] pointer-events-none z-5" />
+              <div className="absolute inset-4.5 border border-dashed border-[#ffdbd0]/20 rounded-[1.5rem] pointer-events-none z-5" />
               
               {/* Premium Corner Ornament vector points */}
-              <div className="absolute top-6 left-6 w-2 h-2 border-t border-l border-[#b97a20]/40" />
-              <div className="absolute top-6 right-6 w-2 h-2 border-t border-r border-[#b97a20]/40" />
-              <div className="absolute bottom-6 left-6 w-2 h-2 border-b border-l border-[#b97a20]/40" />
-              <div className="absolute bottom-6 right-6 w-2 h-2 border-b border-r border-[#b97a20]/40" />
+              <div className="absolute top-6 left-6 w-2 h-2 border-t border-l border-[#b97a20]/40 z-5" />
+              <div className="absolute top-6 right-6 w-2 h-2 border-t border-r border-[#b97a20]/40 z-5" />
+              <div className="absolute bottom-6 left-6 w-2 h-2 border-b border-l border-[#b97a20]/40 z-5" />
+              <div className="absolute bottom-6 right-6 w-2 h-2 border-b border-r border-[#b97a20]/40 z-5" />
 
               {/* Top metadata tags */}
               <div className="flex justify-between items-center relative z-10 select-none">

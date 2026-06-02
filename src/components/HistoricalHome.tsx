@@ -246,6 +246,86 @@ export default function HistoricalHome({ onNavTab }: HistoricalHomeProps) {
           <div className="absolute inset-0 bg-gradient-to-b from-[#fffdfb]/90 via-[#fffdfb]/55 to-[#fffdfb]/90" />
         </div>
 
+        {/* Subtle Elegant Floating Scent Particles & Gilded Light Stars */}
+        <div className="absolute inset-0 pointer-events-none z-5 overflow-hidden">
+          {[...Array(14)].map((_, i) => {
+            const size = Math.random() * 15 + 8; // sizes between 8px and 23px
+            const randomX = Math.random() * 100; // percentage
+            const randomY = Math.random() * 100; // percentage
+            const duration = Math.random() * 15 + 15; // 15s to 30s
+            const delay = Math.random() * -12; // negative delay so they start immediately
+            
+            // Palette matches Häagen-Dazs' high-end luxurious theme
+            let backgroundStyle = 'radial-gradient(circle, rgba(185,122,32,0.18) 0%, rgba(185,122,32,0) 70%)';
+            if (i % 3 === 1) {
+              backgroundStyle = 'radial-gradient(circle, rgba(0,110,32,0.12) 0%, rgba(0,110,32,0) 70%)';
+            } else if (i % 3 === 2) {
+              backgroundStyle = 'radial-gradient(circle, rgba(255,255,255,0.45) 0%, rgba(255,255,255,0) 70%)';
+            }
+
+            return (
+              <motion.div
+                key={`particle-${i}`}
+                className="absolute rounded-full pointer-events-none"
+                style={{
+                  width: size,
+                  height: size,
+                  left: `${randomX}%`,
+                  top: `${randomY}%`,
+                  background: backgroundStyle,
+                  boxShadow: i % 3 === 0 ? '0 0 12px rgba(251,191,36,0.15)' : 'none',
+                }}
+                animate={{
+                  y: [0, -70, -35, 0],
+                  x: [0, 45, -30, 0],
+                  scale: [1, 1.25, 0.75, 1],
+                  opacity: [0.15, 0.6, 0.3, 0.15],
+                }}
+                transition={{
+                  duration: duration,
+                  repeat: Infinity,
+                  delay: delay,
+                  ease: "easeInOut"
+                }}
+              />
+            );
+          })}
+
+          {/* Luxury diamond sparkles ✦ spinning and breathing */}
+          {[...Array(8)].map((_, i) => {
+            const size = Math.random() * 12 + 10;
+            const randomX = Math.random() * 90 + 5;
+            const randomY = Math.random() * 90 + 5;
+            const duration = Math.random() * 14 + 10;
+            const delay = Math.random() * -10;
+            return (
+              <motion.div
+                key={`sparkle-${i}`}
+                className="absolute text-amber-500/25 pointer-events-none font-serif flex items-center justify-center"
+                style={{
+                  left: `${randomX}%`,
+                  top: `${randomY}%`,
+                  fontSize: `${size}px`
+                }}
+                animate={{
+                  y: [0, -45, 15, 0],
+                  rotate: [0, 180, 360],
+                  scale: [0.75, 1.25, 0.75],
+                  opacity: [0.08, 0.5, 0.08]
+                }}
+                transition={{
+                  duration: duration,
+                  repeat: Infinity,
+                  delay: delay,
+                  ease: "linear"
+                }}
+              >
+                ✦
+              </motion.div>
+            );
+          })}
+        </div>
+
         <div className="max-w-[1280px] mx-auto px-4 md:px-8 relative z-10">
           
           {/* Header block with elegant typography pairing */}

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { CupSoda, Eye, Plus, Trash2, ShoppingCart, Award, Sparkles, Scale, Info, Check } from 'lucide-react';
+import { CupSoda, Eye, Plus, Trash2, ShoppingCart, Award, Sparkles, Scale, Info, Check, Sun, Sunset } from 'lucide-react';
 import { SUNDAE_INGREDIENTS } from '../data';
 import { SundaeIngredient, Product } from '../types';
 import { playBubbleSound, playScoopDropSound, playCrystalChime } from '../utils/audio';
@@ -18,15 +18,43 @@ export default function VirtualSundae({ onAddCustomProduct, onOpenCart }: Virtua
   const [selectedSauces, setSelectedSauces] = useState<SundaeIngredient[]>([]);
   const [selectedToppings, setSelectedToppings] = useState<SundaeIngredient[]>([]);
   const [successMode, setSuccessMode] = useState(false);
-  const [sundaeBgUrl, setSundaeBgUrl] = useState("https://i.postimg.cc/phFWmG5d/2a4201a1854a13877f8be73486ba4237.png");
+  const [sundaeBgUrl, setSundaeBgUrl] = useState("https://i.postimg.cc/T1pGD0HL/17590d6537b8bcb3b845b40e09bc7e6d.jpg");
+  const [lightingMode, setLightingMode] = useState<'studio' | 'sunset'>('studio');
+
+  // Interactive 3D tilt states based on hover & mouse movement
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    
+    // Coordinates relative to the center of the container box
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    
+    // Normalize coordinates to ranges roughly between -1 and 1
+    const normX = x / (rect.width / 2);
+    const normY = y / (rect.height / 2);
+
+    // Translate to rotation angles: max -14/14 degree pitch and -22/22 degree yaw
+    setRotateX(-normY * 14);
+    setRotateY(normX * 22);
+  };
+
+  const handleMouseLeave = () => {
+    // Smooth custom return snap back
+    setRotateX(0);
+    setRotateY(0);
+  };
 
   const handleBgError = () => {
-    if (sundaeBgUrl.endsWith('.png')) {
-      setSundaeBgUrl("https://i.postimg.cc/phFWmG5d/2a4201a1854a13877f8be73486ba4237.jpg");
-    } else if (sundaeBgUrl.endsWith('.jpg')) {
-      setSundaeBgUrl("https://i.postimg.cc/phFWmG5d/2a4201a1854a13877f8be73486ba4237.jpeg");
-    } else if (sundaeBgUrl.endsWith('.jpeg')) {
-      setSundaeBgUrl("https://i.postimg.cc/phFWmG5d/2a4201a1854a13877f8be73486ba4237.webp");
+    if (sundaeBgUrl.includes('.jpg')) {
+      setSundaeBgUrl("https://i.postimg.cc/T1pGD0HL/17590d6537b8bcb3b845b40e09bc7e6d.png");
+    } else if (sundaeBgUrl.includes('.png')) {
+      setSundaeBgUrl("https://i.postimg.cc/T1pGD0HL/17590d6537b8bcb3b845b40e09bc7e6d.jpeg");
+    } else if (sundaeBgUrl.includes('.jpeg')) {
+      setSundaeBgUrl("https://i.postimg.cc/T1pGD0HL/17590d6537b8bcb3b845b40e09bc7e6d.webp");
     }
   };
 
@@ -77,7 +105,8 @@ export default function VirtualSundae({ onAddCustomProduct, onOpenCart }: Virtua
   // Toggle checklist sauces
   const handleToggleSauce = (item: SundaeIngredient) => {
     playBubbleSound();
-    if (selectedSauces.some(s => s.id === item.id)) {
+    const isChecked = selectedSauces.some(s => s.id === item.id);
+    if (isChecked) {
       setSelectedSauces(selectedSauces.filter(s => s.id !== item.id));
     } else {
       setSelectedSauces([...selectedSauces, item]);
@@ -87,7 +116,8 @@ export default function VirtualSundae({ onAddCustomProduct, onOpenCart }: Virtua
   // Toggle checklist toppings
   const handleToggleTopping = (item: SundaeIngredient) => {
     playBubbleSound();
-    if (selectedToppings.some(t => t.id === item.id)) {
+    const isChecked = selectedToppings.some(t => t.id === item.id);
+    if (isChecked) {
       setSelectedToppings(selectedToppings.filter(t => t.id !== item.id));
     } else {
       setSelectedToppings([...selectedToppings, item]);
@@ -177,7 +207,7 @@ export default function VirtualSundae({ onAddCustomProduct, onOpenCart }: Virtua
         
         {/* Left Configurations controller panels */}
         <div className="lg:col-span-7 flex flex-col space-y-6">
-          
+
           {/* STEP 1: Cup vessel picker */}
           <div className="bg-white rounded-3xl p-6 md:p-8 border border-[#ffe9e3] shadow-xs space-y-4">
             <h3 className="font-serif text-[18px] font-bold text-[#6c2f00] flex items-center gap-2">
@@ -391,21 +421,78 @@ export default function VirtualSundae({ onAddCustomProduct, onOpenCart }: Virtua
             </span>
 
             {/* Simulated 3D Pile Visualizer block */}
-            <div className="h-64 bg-[#fff8f6] rounded-2xl relative overflow-hidden flex flex-col items-center justify-end p-8 border border-[#ffe9e3]">
-              <div className="absolute top-4 left-4 text-[10px] uppercase font-sans tracking-widest text-gray-400 font-bold">
-                圣代结构堆栈
+            <div 
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              style={{ perspective: 1000 }}
+              className={`h-64 rounded-2xl relative overflow-hidden flex flex-col items-center justify-end p-8 border hover:shadow-md transition-all duration-700 cursor-grab active:cursor-grabbing ${
+                lightingMode === 'sunset' 
+                  ? 'bg-gradient-to-tr from-[#ffe0cc] via-[#fff5ed] to-[#fed7aa] border-orange-200' 
+                  : 'bg-[#fff8f6] border-[#ffe9e3]'
+              }`}
+            >
+              {/* Ambient Golden Hour Light Filter overlay */}
+              {lightingMode === 'sunset' && (
+                <div className="absolute inset-0 bg-[#e05300]/5 pointer-events-none transition-opacity duration-700 select-none mix-blend-color-burn" />
+              )}
+
+              <div className="absolute top-4 left-4 text-[10px] uppercase font-sans tracking-widest text-[#b97a20] font-bold flex items-center gap-2">
+                <span>圣代结构堆栈 (Sundae Layers)</span>
+                <span className="hidden sm:inline bg-[#b97a20]/10 text-[#b97a20] px-2 py-0.5 rounded-md text-[9px] tracking-normal font-medium animate-pulse">
+                  🖱️ 移动鼠标进行 3D 旋转赏析
+                </span>
               </div>
               
-              {/* Reset trigger */}
-              <button 
-                onClick={handleReset}
-                className="absolute top-3 right-3 text-xs text-red-500 hover:text-red-700 bg-white shadow-xs p-1.5 px-3 rounded-full flex items-center gap-1 cursor-pointer select-none border border-red-100"
+              {/* Top tools controls container */}
+              <div className="absolute top-3 right-3 flex items-center gap-2 z-50">
+                {/* Reset trigger */}
+                <button 
+                  onClick={handleReset}
+                  className="text-xs text-red-500 hover:text-red-700 bg-white shadow-xs p-1.5 px-3 rounded-full flex items-center gap-1 cursor-pointer select-none border border-red-100 hover:bg-red-50/50"
+                >
+                  <Trash2 className="w-3.5 h-3.5" /> 清空
+                </button>
+              </div>
+
+              {/* Lighting Toggle Button moved to the bottom right corner */}
+              <button
+                onClick={() => {
+                  setLightingMode(prev => prev === 'studio' ? 'sunset' : 'studio');
+                  playBubbleSound();
+                }}
+                className={`absolute bottom-3 right-3 text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5 cursor-pointer select-none border transition-all duration-300 font-bold shadow-xs active:scale-95 z-50
+                  ${lightingMode === 'sunset' 
+                    ? 'bg-amber-600 text-white border-amber-500 hover:bg-amber-700 shadow-md shadow-orange-500/20' 
+                    : 'bg-white text-[#6c2f00] border-[#ffe9e3] hover:bg-[#fff8f6]'
+                  }`}
               >
-                <Trash2 className="w-3.5 h-3.5" /> 清空
+                {lightingMode === 'sunset' ? (
+                  <>
+                    <Sunset className="w-3.5 h-3.5 text-amber-200 animate-pulse" />
+                    <span>落日晚霞 (Sunset)</span>
+                  </>
+                ) : (
+                  <>
+                    <Sun className="w-3.5 h-3.5 text-amber-500" />
+                    <span>摄影棚光 (Studio)</span>
+                  </>
+                )}
               </button>
 
-              {/* The stack layers items */}
-              <div className="w-48 flex flex-col items-center relative select-none pt-12 pb-4">
+              {/* The stack layers items with interactive springy 3D tilt and ambient lighting filter */}
+              <motion.div 
+                animate={{
+                  rotateX: rotateX,
+                  rotateY: rotateY,
+                }}
+                transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+                style={{ transformStyle: 'preserve-3d' }}
+                className={`w-48 flex flex-col items-center relative select-none pt-12 pb-4 transition-all duration-700 ${
+                  lightingMode === 'sunset' 
+                    ? 'saturate-125 contrast-105 brightness-[1.02] drop-shadow-[0_12px_20px_rgba(234,88,12,0.25)]' 
+                    : ''
+                }`}
+              >
                 
                 {/* 1. TOppings: Floating premium physical garnish illustrations */}
                 {selectedToppings.length > 0 && (
@@ -416,10 +503,8 @@ export default function VirtualSundae({ onAddCustomProduct, onOpenCart }: Virtua
                   >
                     {selectedToppings.map((top, idx) => {
                       const isGold = top.id.includes('gold');
-                      const isMint = top.id.includes('mint');
-                      const isAlmond = top.id.includes('almond');
                       const borderCol = isGold ? 'border-yellow-400' : 'border-[#ffe9e3]';
-                      const bgCol = isGold ? 'bg-gradient-to-r from-yellow-500 to-amber-600 text-white' : isMint ? 'bg-[#006e20] text-white' : 'bg-amber-800 text-white';
+                      const bgCol = isGold ? 'bg-gradient-to-r from-yellow-500 to-amber-600 text-white' : 'bg-amber-800 text-white';
                       return (
                         <motion.div 
                           key={idx} 
@@ -496,41 +581,156 @@ export default function VirtualSundae({ onAddCustomProduct, onOpenCart }: Virtua
                 </div>
 
                 {/* 4. GOBLET: Premium Translucent Glass Goblet representing selected vessel */}
-                <div 
-                  className="w-32 h-18 rounded-b-[40px] rounded-t-sm pt-2 flex flex-col items-center justify-center text-center px-4 relative z-30 transition-all duration-500 shadow-md border-x-2 border-b-2"
-                  style={{ 
-                    backgroundColor: `${selectedCup.color}15`, // Translucent cup primary tint
-                    borderColor: `${selectedCup.color}70`,
-                    backdropFilter: 'blur(3px)',
-                    boxShadow: `0 8px 20px -4px ${selectedCup.color}30, inset 0 2px 10px rgba(255,255,255,0.6)`
+                <motion.div
+                  onClick={() => {
+                    playCrystalChime();
                   }}
+                  whileHover={{ 
+                    scale: 1.05, 
+                    y: -4,
+                    transition: { type: 'spring', stiffness: 350, damping: 12 }
+                  }}
+                  whileTap={{ 
+                    scale: 0.95, 
+                    rotate: [0, -3, 3, 0],
+                    transition: { duration: 0.25 } 
+                  }}
+                  className="flex flex-col items-center cursor-pointer select-none group relative z-30 perspective-1000"
                 >
-                  {/* Glass bowl rim reflection line */}
-                  <div className="absolute top-0 inset-x-0 h-[2px] bg-white/70 z-35" />
+                  {/* Virtual rising interactive bubbles within the cup when hovered */}
+                  <div className="absolute bottom-16 w-32 h-18 overflow-hidden pointer-events-none z-35 flex justify-around items-end px-4">
+                    {[...Array(5)].map((_, i) => (
+                      <motion.div
+                        key={i}
+                        className="w-1.5 h-1.5 rounded-full bg-white/40 border border-white/20"
+                        animate={{
+                          y: [0, -80],
+                          x: [0, Math.sin(i) * 12, 0],
+                          opacity: [0, 0.9, 0],
+                          scale: [0.6, 1.2, 0.5]
+                        }}
+                        transition={{
+                          duration: 1.5 + i * 0.4,
+                          repeat: Infinity,
+                          delay: i * 0.2,
+                          ease: "easeInOut"
+                        }}
+                      />
+                    ))}
+                  </div>
 
-                  <span className="font-serif text-[10px] font-bold uppercase tracking-widest leading-none z-40 bg-white/80 border border-amber-900/10 px-2 py-1 rounded-full text-[#6c2f00] max-w-[95%] truncate">
-                    {selectedCup.name}
-                  </span>
-                </div>
-                
-                {/* Gotlet Stem & Foot base elements */}
-                <div 
-                  className="w-3.5 h-10 border-x transition-colors duration-500" 
-                  style={{ 
-                    backgroundColor: `${selectedCup.color}25`,
-                    borderColor: `${selectedCup.color}70`
-                  }} 
-                />
-                <div 
-                  className="w-20 h-3 rounded-full border transition-all duration-500" 
-                  style={{ 
-                    backgroundColor: `${selectedCup.color}20`,
-                    borderColor: `${selectedCup.color}60`,
-                    boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.7)'
-                  }} 
-                />
+                  {/* Cup Physical Bowl rendering */}
+                  {selectedCup.id === 'cup-waffle' ? (
+                    /* Textured Egg Waffle Cone Bowl style - Opaque & Highly detailed */
+                    <div 
+                      className="w-32 h-18 rounded-b-[40px] rounded-t-xl pt-2 flex flex-col items-center justify-center text-center px-4 relative transition-all duration-500 shadow-lg border-x-4 border-b-4 border-[#b47a46]"
+                      style={{ 
+                        backgroundColor: '#e3a869', // Opaque base
+                        backgroundImage: `
+                          repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(139, 90, 43, 0.15) 10px, rgba(139, 90, 43, 0.15) 12px),
+                          repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(139, 90, 43, 0.15) 10px, rgba(139, 90, 43, 0.15) 12px)
+                        `,
+                        boxShadow: '0 8px 16px -2px rgba(120,60,20,0.3), inset 0 2px 8px rgba(255,180,100,0.4), inset 0 -6px 14px rgba(90,40,10,0.2)'
+                      }}
+                    >
+                      {/* Crinkled waffle crunchy rim */}
+                      <div className="absolute -top-1.5 inset-x-0 h-3 flex justify-between px-0.5 pointer-events-none">
+                        {[...Array(12)].map((_, i) => (
+                          <div key={i} className="w-2.5 h-2.5 rounded-full bg-[#e3a869] border-t-2 border-[#ffead0]" />
+                        ))}
+                      </div>
 
-              </div>
+                      <span className="font-serif text-[10px] font-black uppercase tracking-widest leading-none z-40 bg-[#fffdfa] border-2 border-[#b47a46] px-2.5 py-1 rounded-full text-[#6c2f00] max-w-[95%] truncate shadow-md group-hover:scale-103 transition-transform">
+                        {selectedCup.name}
+                      </span>
+                    </div>
+                  ) : selectedCup.id === 'cup-gilt' ? (
+                    /* Royal Gilt Palace Cup - Opaque Royal Gold Velvet-Cream style */
+                    <div 
+                      className="w-32 h-18 rounded-b-[35px] rounded-t-sm pt-2 flex flex-col items-center justify-center text-center px-4 relative transition-all duration-500 shadow-xl border-x-4 border-b-4 border-amber-500"
+                      style={{ 
+                        backgroundColor: '#6c1512', // Rich royal red/burgundy ceramic (highly visible & high contrast)
+                        backgroundImage: 'radial-gradient(circle at 50% 120%, #991c18 0%, #460907 100%)',
+                        boxShadow: '0 10px 20px -3px rgba(0,0,0,0.45), inset 0 3px 10px rgba(255,215,0,0.5)'
+                      }}
+                    >
+                      {/* Luxurious imperial gold strip ornament lines */}
+                      <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-300 z-35" />
+                      <div className="absolute bottom-1 inset-x-4 h-1 rounded-full bg-amber-400 z-35" />
+
+                      <span className="font-serif text-[10px] font-black uppercase tracking-widest leading-none z-40 bg-amber-50 border-2 border-amber-500 px-2.5 py-1 rounded-full text-amber-950 max-w-[95%] truncate shadow-md group-hover:scale-103 transition-transform">
+                        👑 {selectedCup.name}
+                      </span>
+                    </div>
+                  ) : (
+                    /* Venetian Crystal Goblet - Turned into clean premium opaque glass/ceramic with gold trim */
+                    <div 
+                      className="w-32 h-18 rounded-b-[40px] rounded-t-sm pt-2 flex flex-col items-center justify-center text-center px-4 relative transition-all duration-500 shadow-xl border-x-4 border-b-4 border-sky-400"
+                      style={{ 
+                        backgroundColor: '#f1f8fc', // Solid premium sky-white glazed porcelain
+                        backgroundImage: 'radial-gradient(circle at 30% 30%, #ffffff 0%, #d4ebf7 100%)',
+                        boxShadow: '0 8px 16px -2px rgba(14,116,144,0.15), inset 0 2px 10px rgba(255,255,255,0.9), inset 0 -4px 10px rgba(186,230,253,0.4)'
+                      }}
+                    >
+                      {/* Shiny golden elegant bowl rim */}
+                      <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-300 z-35" />
+
+                      <span className="font-serif text-[10px] font-black uppercase tracking-widest leading-none z-40 bg-white border-2 border-sky-500 px-2.5 py-1 rounded-full text-sky-950 max-w-[95%] truncate shadow-md group-hover:scale-103 transition-transform">
+                        {selectedCup.name}
+                      </span>
+                    </div>
+                  )}
+                  
+                  {/* Goblet Stems & Foot bases (styled only for non-waffle cups since waffle bowl stands on its own base!) */}
+                  {selectedCup.id !== 'cup-waffle' && (
+                    <>
+                      {/* Goblet Stem */}
+                      <div 
+                        className="w-4 h-9 border-x transition-all duration-500 relative" 
+                        style={{ 
+                          backgroundColor: selectedCup.id === 'cup-gilt' ? '#b45309' : '#bae6fd',
+                          borderColor: selectedCup.id === 'cup-gilt' ? '#f59e0b' : '#38bdf8',
+                          boxShadow: selectedCup.id === 'cup-gilt' ? 'inset 0 0 4px rgba(0,0,0,0.3)' : ''
+                        }} 
+                      >
+                        {/* Stem vertical gold reflection */}
+                        {selectedCup.id === 'cup-gilt' && (
+                          <div className="absolute inset-y-0 left-1 w-0.5 bg-yellow-300 pointer-events-none" />
+                        )}
+                        {selectedCup.id === 'cup-crystal' && (
+                          <div className="absolute inset-y-0 left-1 w-0.5 bg-white pointer-events-none" />
+                        )}
+                      </div>
+
+                      {/* Foot base element */}
+                      <div 
+                        className="w-20 h-4 rounded-full border transition-all duration-500 shadow-md relative" 
+                        style={{ 
+                          backgroundColor: selectedCup.id === 'cup-gilt' ? '#6c1512' : '#f1f8fc',
+                          borderColor: selectedCup.id === 'cup-gilt' ? '#f59e0b' : '#38bdf8',
+                          backgroundImage: selectedCup.id === 'cup-gilt' 
+                            ? 'radial-gradient(circle, #991c18 0%, #460907 100%)' 
+                            : 'radial-gradient(circle, #ffffff 0%, #d4ebf7 100%)',
+                          boxShadow: 'inset 0 1.5px 3px rgba(255,255,255,0.8), 0 3px 6px rgba(0,0,0,0.1)'
+                        }} 
+                      >
+                        {/* Gold or white circular outline highlights */}
+                        <div className={`absolute inset-x-2 top-0.5 h-[1.5px] rounded-full pointer-events-none ${
+                          selectedCup.id === 'cup-gilt' ? 'bg-amber-400' : 'bg-white'
+                        }`} />
+                      </div>
+                    </>
+                  )}
+
+                  {/* Cute small decorative tray stand base underneath waffle cup so it looks highly complete */}
+                  {selectedCup.id === 'cup-waffle' && (
+                    <div className="w-24 h-2 bg-[#8c5a2c] rounded-full shadow-md border border-[#5a3610] mt-0.5 relative">
+                      <div className="absolute inset-x-2 top-0.5 h-[1px] bg-[#dca368] rounded-full" />
+                    </div>
+                  )}
+                </motion.div>
+
+              </motion.div>
             </div>
 
             {/* Estimated Nutrition breakdown list */}
@@ -577,7 +777,7 @@ export default function VirtualSundae({ onAddCustomProduct, onOpenCart }: Virtua
               className={`w-full sm:w-auto px-10 py-4.5 rounded-full font-display text-sm font-bold tracking-widest uppercase transition-all flex items-center justify-center gap-2
                 ${selectedScoops.length === 0
                   ? 'bg-gray-200 border border-gray-100 text-gray-400 cursor-not-allowed'
-                  : 'bg-[#6c2f00] text-white hover:bg-[#8b4513] hover:shadow-lg cursor-pointer transform hover:scale-102 active:scale-98'
+                  : 'bg-[#6c2f00] text-white hover:bg-[#8b4513] hover:shadow-lg cursor-pointer transform hover:scale-102 active:scale-98 shadow-sm'
                 }`}
             >
               <ShoppingCart className="w-4 h-4 text-[#ffdbc9]" />

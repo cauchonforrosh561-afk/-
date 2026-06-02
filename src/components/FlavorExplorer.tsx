@@ -125,7 +125,7 @@ export default function FlavorExplorer({ onAddFlavorToCart }: FlavorExplorerProp
           playsInline
           className="w-full h-full object-cover opacity-85"
         >
-          <source src="https://ik.imagekit.io/vpkooy7vh/5%E6%9C%8827%E6%97%A5.mp4?updatedAt=1779843683617" type="video/mp4" />
+          <source src="https://ik.imagekit.io/vpkooy7vh/6%E6%9C%882%E6%97%A5.mp4" type="video/mp4" />
         </video>
         {/* Symmetrical premium warm-cream overlay to guarantee excellent readability for text and cards */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#fffdfb]/92 via-[#fffdfb]/60 to-[#fffdfb]/92" />

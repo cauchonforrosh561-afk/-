@@ -7,15 +7,17 @@ export const HISTORIAL_YEARS = [
     heading: '突破平庸的甜蜜梦想',
     text: '联合创始人鲁本·马杜斯（Reuben Mattus）对现有冰淇淋品质极度不满足。他矢志不渝地坚信，唯有最极致、最天然的原料才配被称为艺术珍享。他全神贯注研发数年，终于在纽约迈出了传奇的第一步。',
     tag: '创世之光',
-    bgColor: 'bg-primary'
+    bgColor: 'bg-primary',
+    bgImage: 'https://i.postimg.cc/PvsBGWHT/17590d6537b8bcb3b845b40e09bc7e6d.jpg'
   },
   {
     year: '1961',
     title: '三大经典启程',
     heading: '香草、巧克力与硬派咖啡',
-    text: '哈根达斯品牌正式面世，首发仅提供三种至高纯粹的口味。它们瞬间风靡曼哈顿名流社交界，被盛赞为冰淇淋界的「凡尔赛水晶」。没有捷径，只凭本真，这三大金刚口味至今仍是高级甜品的代名词。',
+    text: '哈根达斯品牌正式面世，首发仅提供三种至高纯粹的口味。它们瞬间风靡曼哈顿名流社交界，被盛赞为冰淇淋界的「凡尔赛水晶」。没有捷径，只凭本真，这三大金刚口味至今仍是高级甜品代名词。',
     tag: '不老经典',
-    bgColor: 'bg-[#5c2400]'
+    bgColor: 'bg-[#5c2400]',
+    bgImage: 'https://i.postimg.cc/T1pGD0HL/17590d6537b8bcb3b845b40e09bc7e6d.jpg'
   },
   {
     year: '1976',
@@ -23,7 +25,8 @@ export const HISTORIAL_YEARS = [
     heading: '让冰淇淋成为一种社交艺术',
     text: '鲁本的女儿多丽丝在布鲁克林黄金地段开设了第一家意式冰淇淋经典概念沙龙。精致的白瓷咖啡杯、尊贵银匙，以及舒缓的现场古典室内弦乐，彻底改写了年轻一代的惬意下午茶社交文化。',
     tag: '优雅地标',
-    bgColor: 'bg-[#003b14]'
+    bgColor: 'bg-[#003b14]',
+    bgImage: 'https://i.postimg.cc/T1pGD0HL/17590d6537b8bcb3b845b40e09bc7e6d.jpg'
   },
   {
     year: '1990',
@@ -31,7 +34,8 @@ export const HISTORIAL_YEARS = [
     heading: '巴黎香榭丽舍与东京银座的钟声',
     text: '从纽约走向世界，哈根达斯成为跨越欧亚非的全球轻奢生活符号。在巴黎老派剧院外，在东京繁华的午夜街头，带着金框纸杯的哈根达斯成为表达高雅审美品味的奢华信物。',
     tag: '时代风潮',
-    bgColor: 'bg-primary-container'
+    bgColor: 'bg-primary-container',
+    bgImage: 'https://i.postimg.cc/PvsBGWHT/17590d6537b8bcb3b845b40e09bc7e6d.jpg'
   },
   {
     year: '2020',
@@ -39,7 +43,8 @@ export const HISTORIAL_YEARS = [
     heading: '经典艺术再年轻',
     text: '庆祝60载风味传承与纯粹洗礼。联合先锋视觉艺术家，重构传统包装设计，并推出低脂轻卡的水果雪芭与创新的流心熔岩系列，致力于将「心无挂碍，舌尖起舞」的沉浸感带给全新世代。',
     tag: '未来旅程',
-    bgColor: 'bg-[#3b1200]'
+    bgColor: 'bg-[#3b1200]',
+    bgImage: 'https://i.postimg.cc/PvsBGWHT/17590d6537b8bcb3b845b40e09bc7e6d.jpg'
   }
 ];
 
